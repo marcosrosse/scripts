@@ -11,10 +11,10 @@ subprocess.run(["sh", "get-docker.sh"])
 ## Checando se os serviços estão com status active
 
 def servicesToCheck():
-    servicesToCheck = ['docker', 'nginx']
+    services = ['docker', 'nginx']
 
-    for servicesToCheck in servicesToCheck:
-        process =  subprocess.Popen(["systemctl", "is-active",  servicesToCheck], stdout=subprocess.PIPE)
+    for service in services:
+        process =  subprocess.Popen(["systemctl", "is-active",  service], stdout=subprocess.PIPE)
         (output, err) = process.communicate()
         output = output.decode('utf-8')
         
