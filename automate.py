@@ -21,10 +21,6 @@ def servicesToCheck():
 
         if 'inactive' in output:
             print("Os seguintes serviços estão desativos:", service)
-            # try:
-            #     trying = subprocess.Popen(["systemctl", "start", service], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            # except:
-            #     print("O serviço:", trying, "falhou a inciar")
         else:
             print("Serviço:", service,"ativo")
 
