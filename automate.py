@@ -49,9 +49,9 @@ def touchVirtualHosts():
     pathNgnix = "/etc/nginx/conf.d/"
     fileName = ['app1.conf', 'app2.conf', 'app3.conf']
     confFilesNginx = (
-    "server{\nlisten 80;\nserver_name app1.dexter.com.br; location /{\nproxy_pass http://192.168.15.43:8080/;\n}\n}",
-    "server{\nlisten 80;\nserver_name app2.dexter.com.br; location /{\nproxy_pass http://192.168.15.43:8081/;\n}\n}",
-    "server{\nlisten 80;\nserver_name app3.dexter.com.br; location /{\nproxy_pass http://192.168.15.43:8082/;\n}\n}"
+    "server{\nlisten 80;\nserver_name app1.dexter.com.br; location /{\nproxy_pass http://127.0.0.1:8080/;\n}\n}",
+    "server{\nlisten 80;\nserver_name app2.dexter.com.br; location /{\nproxy_pass http://127.0.0.1:8081/;\n}\n}",
+    "server{\nlisten 80;\nserver_name app3.dexter.com.br; location /{\nproxy_pass http://127.0.0.1:8082/;\n}\n}"
     )
 
     for touching, config in zip (fileName, confFilesNginx):
