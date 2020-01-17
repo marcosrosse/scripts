@@ -24,10 +24,12 @@ def servicesToCheck():
         process =  subprocess.Popen(["systemctl", "is-active",  service], stdout=subprocess.PIPE)
         (output, err) = process.communicate()
         output = output.decode('utf-8')
+
        
     if 'inactive' in output:
         print("Os seguintes serviços estão desativos:", service, "Será iniciado logo em seguida!")
         subprocess.Popen(["systemctl", "start", service])
+
 
 servicesToCheck()
 
