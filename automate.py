@@ -6,12 +6,21 @@ import sys
 ## Preparando e instalando pacotes necessarios
 
 def preparing():
+    apps = ("ngnix docker-ce docker-ce-cli containerd.io")
     subprocess.run(["apt-get", "update", "-y"])
     subprocess.run(["apt-get", "upgrade", "-y"])
-    subprocess.run(["apt-get", "install", "nginx", "-y"])
-    subprocess.run(["curl", "-fsSL", "https://get.docker.com", "-o", "get-docker.sh"])
-    subprocess.run(["sh", "get-docker.sh"])
-    os.remove("get-docker.sh")
+    process =  subprocess.Popen(["apt", "list", "--installed",  apps], stdout=subprocess.PIPE)
+    (output, err) = process.communicate()
+    output = output.decode('utf-8')
+
+       
+    if apps in output:
+       return servicesToCheck
+    else:    
+        subprocess.run(["apt-get", "install", "nginx", "-y"])
+        subprocess.run(["curl", "-fsSL", "https://get.docker.com", "-o", "get-docker.sh"])
+        subprocess.run(["sh", "get-docker.sh"])
+        os.remove("get-docker.sh")
 
 preparing()
 
@@ -37,13 +46,12 @@ servicesToCheck()
 
 def touchVirtualHosts():
 
-    pathNgnix = '/etc/nginx/conf.d/'
+    pathNgnix = "/etc/nginx/conf.d/"
     fileName = ['app1.conf', 'app2.conf', 'app3.conf']
-    os.path.join(pathNgnix, 'default.conf')
-    confFilesNginx =(
-    "server{\nlisten 80;\nserver_name app1.dexter.com.br; location /{\nproxy_pass http://35.193.203.135:8080/;\n}\n}",
-    "server{\nlisten 80;\nserver_name app2.dexter.com.br; location /{\nproxy_pass http://35.193.203.135:8081/;\n}\n}",
-    "server{\nlisten 80;\nserver_name app3.dexter.com.br; location /{\nproxy_pass http://35.193.203.135:8082/;\n}\n}"
+    confFilesNginx = (
+    "server{\nlisten 80;\nserver_name app1.dexter.com.br; location /{\nproxy_pass http://192.168.15.43:8080/;\n}\n}",
+    "server{\nlisten 80;\nserver_name app2.dexter.com.br; location /{\nproxy_pass http://192.168.15.43:8081/;\n}\n}",
+    "server{\nlisten 80;\nserver_name app3.dexter.com.br; location /{\nproxy_pass http://192.168.15.43:8082/;\n}\n}"
     )
 
     for touching, config in zip (fileName, confFilesNginx):
