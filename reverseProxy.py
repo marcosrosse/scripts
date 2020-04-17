@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 
-## Preparando e instalando pacotes necessarios
+## Preparing environment and installing packages
 def preparing():
     apps = ("ngnix docker-ce docker-ce-cli containerd.io")
     subprocess.run(["apt-get", "update", "-y"])
@@ -24,7 +24,7 @@ def preparing():
         os.remove("get-docker.sh")
 
 
-## Checando se os serviços estão com status active
+## Checking services status
 def servicesToCheck():
     services = ['docker', 'nginx']
     for service in services:
@@ -33,13 +33,13 @@ def servicesToCheck():
         output = output.decode('utf-8')
 
         if 'inactive' in output:
-            print("Os seguintes serviços estão desativos:", service, "Será iniciado logo em seguida!")
+            print("This services are inactives:", service, "... starting...")
             subprocess.Popen(["systemctl", "start", service])
 
 
 
 
-## Criando e exportando arquivos de virtualhosts do nginx
+## Creating and exporting nginx virtualhosts
 def touchVirtualHosts():
     pathNgnix = '/etc/nginx/conf.d/'
     configFiles = ['app1.conf', 'app2.conf', 'app3.conf']
@@ -55,7 +55,7 @@ def touchVirtualHosts():
 
 
 
-## Criando estrutura de pastas
+## Creating folder hierarchy 
 def structureDocker():
     containers = ['app1', 'app2', 'app3']
     ports = ['8080', '8081', '8082']
