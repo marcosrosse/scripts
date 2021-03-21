@@ -13,7 +13,7 @@ then
   then
      pacman -Syyu docker;
   else
-     curl -sSFL https://get.docker.com | sh
+     curl -sSL https://get.docker.com | sh
 
 fi
 fi  
