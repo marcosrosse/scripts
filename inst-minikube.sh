@@ -8,10 +8,13 @@ fi
 
 if !  command -v docker -v  &> /dev/null
 then
-   DISTRO=$( cat /etc/*-release | tr [:upper:] [:lower:] | grep -Poi '(debian|ubuntu|red hat|centos)' | uniq )
+   DISTRO=$( cat /etc/*-release | tr [:upper:] [:lower:] | grep -Poi '(debian|ubuntu)' | uniq )
   if [ -z $DISTRO ]
   then
-     pacman -Syyu docker;
+     yum update -y; 
+     yum install docker;
+     service start docker;
+     service enable docker
   else
      curl -sSL https://get.docker.com | sh
 
