@@ -2,9 +2,11 @@
 
 if (( $EUID != 0 ));
 then
-    echo  "Please, run as root!"
+    echo "/* Please, run as root! */"
     exit
 fi
+
+echo "/* Installing Docker */"
 
 if !  command -v docker -v  &> /dev/null
 then
@@ -20,6 +22,15 @@ then
 
 fi
 fi  
-    curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64;
-    install minikube-linux-amd64 /usr/local/bin/minikube;
-    echo "Minikibe has been installed"
+
+echo "/* Installing Kubelet, please wait a fill seconds.... */"
+
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+
+
+echo "/* Installinig Minikube */"
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64;
+mv minikube-linux-amd64 /usr/local/bin/minikube;
