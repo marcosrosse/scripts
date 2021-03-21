@@ -12,7 +12,7 @@ then
   if [ -z $DISTRO ]
   then
      yum update -y; 
-     yum install docker;
+     yum install -y docker;
      service start docker;
      service enable docker
   else
