@@ -1,23 +1,24 @@
+# This script will create a project in Azure DevOps
+
+from typing import KeysView
 import requests
 import json
 
 
-authorization = "YOUR AZURE DEVOPS KEY"
-base__url = "BASE URL OF AZURE DEVOPS"
+authorization = ""
+base__url = ""
 dev__netcore__pipeline = (
-  'IN BASE64'
+  ''
 )
 uat__netcore__pipeline = (
-  'IN BASE64'
+  ''
 )
-
-
 
 
 def createProject():
   global project__name
-  project__name = input ("Enter here the project name: ")
-  description = input ("Enter here a brief description of your project: ")
+  project__name = input ("Enter here the project name (example: atp-back-search or atp-lib-app, etc): ")
+  description = input ("Enter here a brief description of this project: ")
   url = 'https://{}_apis/projects?api-version=5.1'.format(base__url)
 
   payload = json.dumps({
@@ -38,12 +39,17 @@ def createProject():
   }
   requests.packages.urllib3.disable_warnings()
   response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-  print (response.status_code)
+  if response.status_code == 202:
+    print ('Project {} created\n'.format(project__name))
+  else:
+    print ('\nError when trying to create project. Status code: {}'.format(response.status_code))
+    quit()
+
 
 def createEndpoint():
-    clientResponse = ''
-    while clientResponse != 0:
-      clientResponse = input("What kind of service connection do you want (inform the number)? 1) Openshift, 2) Checkmarx, 3) SonarQube, 4) Artifacts, 5) Nexus -- 0) QUIT): ")
+    input__answer = ''
+    while input__answer != '0':
+      input__answer = input("What kind of service connection do you want (inform the number)? 1) Openshift, 2) Checkmarx, 3) SonarQube, 4) Artifacts, 5) Nexus -- 0) QUIT): ")
       endpointsConnections = {
         '1': {
           'endpointName': 'Openshift',
@@ -81,8 +87,8 @@ def createEndpoint():
           'endpointPassword': '',
         }
       }
-      if clientResponse in endpointsConnections:
-          connection = endpointsConnections[clientResponse]
+      if input__answer in endpointsConnections:
+          connection = endpointsConnections[input__answer]
           url = 'https://{}{}/_apis/serviceendpoint/endpoints?api-version=5.1-preview.2'.format(base__url, project__name)
 
           payload = json.dumps({
@@ -106,11 +112,13 @@ def createEndpoint():
           }
           requests.packages.urllib3.disable_warnings()
           response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-          print (response.status_code)
-      elif clientResponse != '0' and endpointsConnections:
-        print ('Non-existent service connection. If possible, register manualy')
+          if response.status_code == 200:
+            print ('\nEndpoint connection created in repository {}\n '.format(project__name))
+          else:
+            print ('\nError when trying to create endpoint connection. Status code: {}. Try to create manualy.'.format(response.status_code))
       else:
-        return None
+        print ('\nIf possible, create manualy\n')
+
 
 def addPipelineFiles():
   url = 'https://{}{}/_apis/git/repositories/{}/pushes?api-version=5.1'.format(base__url, project__name, project__name)
@@ -119,7 +127,7 @@ def addPipelineFiles():
     "refUpdates": [
       {
         "name": "refs/heads/develop",
-        "oldObjectId": "00000000000000000000000000000"
+        "oldObjectId": "0000000000000000000000000000000000000000"
       }
     ],
     "commits": [
@@ -156,16 +164,18 @@ def addPipelineFiles():
   }
   requests.packages.urllib3.disable_warnings()
   response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-  print (response.status_code)
+  if response.status_code == 201:
+    print ('\nPipeline yaml files created in the repository {}'.format(project__name))
+    print ('\n BYE!')
+  else:
+    print ('Error when trying to upload pipeline files to develop branch in {}. Status code: {}. Try to upload manualy.'.format(project__name,response.status_code))  
 
 
-createProject()
-createEndpoint()
-addPipelineFiles()
-# def main ():
-#     createProject()
-#     createEndpoint()
-#     addPipelineFiles()
 
-# if __name__ == '__main__':
-#   main()
+def main ():
+    createProject()
+    createEndpoint()
+    addPipelineFiles()
+
+if __name__ == '__main__':
+  main()
