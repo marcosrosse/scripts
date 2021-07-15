@@ -5,8 +5,8 @@ import requests
 import json
 
 
-authorization = ""
-base__url = ""
+authorization = ''
+base__url = ''
 dev__netcore__pipeline = (
   ''
 )
@@ -17,7 +17,7 @@ uat__netcore__pipeline = (
 
 def createProject():
   global project__name
-  project__name = input ("Enter here the project name (example: atp-back-search or atp-lib-app, etc): ")
+  project__name = input ("Enter here the project name: ")
   description = input ("Enter here a brief description of this project: ")
   url = 'https://{}_apis/projects?api-version=5.1'.format(base__url)
 
