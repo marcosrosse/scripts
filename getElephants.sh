@@ -25,6 +25,7 @@ function getElephantsFile {
         echo "ERROR WHILE COPYING THE FILE $line, PLEASE TRY AGAIN LATTER"
         echo "$line" >> error.txt
         echo ""
+      fi
     done
 }
 createAndGetFilename
