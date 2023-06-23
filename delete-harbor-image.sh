@@ -1,6 +1,3 @@
-Certainly! Here's an improved version of the script:
-
-```bash
 #!/bin/bash
 # Simple script to delete the latest images in Harbor before uploading a new image.
 # Run this in your CI/CD pipeline
