@@ -1,33 +1,37 @@
 #!/bin/bash
 
 #How to use:
-## Create a file with IP:PORT or DNS:PORT, exemple:
-## 127.0.0.1:1521
-## 127.0.0.1:443
-## 127.0.0.1:9200
+## Create a csv file with IP, PORT or DNS, PORT. Exemple:
+## host,port
+## 127.0.0.1,1521
+## 127.0.0.1,443
+## 127.0.0.1,9200
 
-#How to execute: 
-## ./test-conn.sh -l list.txt -t 2 -o output.csv
+#How to execute:
+## ./test-conn.sh -l list.csv -t 2
 
-while getopts l:o:t: flag
+while getopts l:t: flag
 do
   case "${flag}" in
     l) list=${OPTARG};;
-    o) output=${OPTARG};;
     t) timeout=${OPTARG};;
   esac
 done
 
 file=$list
 
-echo "host_and_port,status" > output.txt
+echo "host,port,status" > output.csv
 
-while IFS= read -r line
+while IFS="," read -r col1 col2
 do
-   echo -e '\x1dclose\x0d'|curl --connect-timeout $timeout telnet://$line -vv
+   echo -e '\x1dclose\x0d'|curl --connect-timeout $timeout telnet://$col1:$col2 --silent > /dev/null
+   echo -e "Requesting host $col1 on port $col2\n"
    if [ $? -eq 0 ]; then
-    echo -e "$line,success" >> $output
+    echo -e "$col1,$col2,success" >> output.csv
    else
-    echo -e "$line,failed" >> $output
+    echo -e "$col1,$col2,failed" >> output.csv
    fi
 done <"$file"
+
+# To remove the first line of the file
+sed -i '2d' output.csv
