@@ -33,5 +33,5 @@ do
    fi
 done <"$file"
 
-# To remove the first line of the file
+# To remove the second line of the file
 sed -i '2d' output.csv
