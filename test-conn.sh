@@ -24,8 +24,8 @@ echo "host,port,status" > output.csv
 
 while IFS="," read -r col1 col2
 do
-   echo -e '\x1dclose\x0d'|curl --connect-timeout $timeout telnet://$col1:$col2 --silent > /dev/null
    echo -e "Requesting host $col1 on port $col2\n"
+   echo -e '\x1dclose\x0d'|curl --connect-timeout $timeout telnet://$col1:$col2 --silent > /dev/null
    if [ $? -eq 0 ]; then
     echo -e "$col1,$col2,success" >> output.csv
    else
