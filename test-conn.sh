@@ -2,7 +2,6 @@
 
 #How to use:
 ## Create a csv file with IP, PORT or DNS, PORT. Exemple:
-## host,port
 ## 127.0.0.1,1521
 ## 127.0.0.1,443
 ## 127.0.0.1,9200
@@ -35,4 +34,4 @@ do
 done <"$file"
 
 # To remove the second line of the file
-sed -i '2d' output.csv
+# sed -i '2d' output.csv
