@@ -26,10 +26,11 @@ while IFS="," read -r col1 col2
 do
    echo -e "Requesting host $col1 on port $col2\n"
    echo -e '\x1dclose\x0d'|curl --connect-timeout $timeout telnet://$col1:$col2 --silent > /dev/null
-   if [ $? -eq 0 ]; then
-    echo -e "$col1,$col2,success" >> output.csv
+   
+   if [[ $? = 0 || $? = 7 ]]; then
+       echo -e "$col1,$col2,success" >> output.csv
    else
-    echo -e "$col1,$col2,failed" >> output.csv
+       echo -e "$col1,$col2,failed" >> output.csv
    fi
 done <"$file"
 
